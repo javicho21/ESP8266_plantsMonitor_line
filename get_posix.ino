@@ -7,9 +7,12 @@ void get_posix(){   //get posix data from NTP server
   
   int cb = udp.parsePacket();
   if (!cb) {
-  // Serial.println("no packet yet");
-  }
-  else {
+    // if no packet received from NTP, calculate epoch base on (last epoch + millis since last epoch");
+    unsigned long epoch = lastEpoch + (millis() - lastMillis) ;
+    readTime = String(epoch) + "000000000"; 
+    lastEpoch = epoch ;
+    lastMillis = millis();
+  }else{
     udp.read(packetBuffer, NTP_PACKET_SIZE); // read the packet into the buffer
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
     unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
@@ -18,6 +21,9 @@ void get_posix(){   //get posix data from NTP server
     unsigned long secsSince1900 = highWord << 16 | lowWord; //Seconds since Jan 1 1900
     const unsigned long seventyYears = 2208988800UL;  // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
     unsigned long epoch = (secsSince1900 - seventyYears); // subtract seventy years:
+
+    lastEpoch = epoch ;
+    lastMillis = millis();
     
     readTime = String(epoch) + "000000000"; // print Unix time:
     //Serial.println(readTime);

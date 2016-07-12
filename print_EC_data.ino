@@ -56,7 +56,7 @@ void print_EC_data(void) {                            //this function will pars 
   stringPayload += readTime;
   stringPayload += "\n";
 
-  //Serial.println(stringPayload);
+  Serial.println(stringPayload);
 
   for (int i=0 ; i < 300 ; i++){    //clean the payload
     payload[i]='\0';

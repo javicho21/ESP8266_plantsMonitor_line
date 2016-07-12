@@ -3,6 +3,8 @@
 #include <WiFiUdp.h>
 
 String readTime;  //stores POSIX time format
+unsigned long lastEpoch = 0;
+long lastMillis = 0;
 
 //lines below are for NTP
 unsigned int localPort = 2390;      // local port to listen for UDP packets
@@ -14,7 +16,7 @@ WiFiUDP udp;  // A UDP instance to let us send and receive packets over UDP
 
 // Update these with values suitable for your network.
 const char* ssid = "ASSIST";
-const char* password = "********";
+const char* password = "akihabara@1969";
 const char* mqtt_server = "192.168.10.103";
 
 char myIpString[24];  //used to store IPAddress as array of char
